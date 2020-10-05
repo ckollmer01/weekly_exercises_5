@@ -82,7 +82,39 @@ Once your repository is created, you should always open your **project** rather 
 
 ## Warm-up exercises from tutorial
 
-  1. Choose 2 graphs you have created for ANY assignment in this class and add interactivity using the `ggplotly()` function.
+  1. Choose 2 graphs you have created for ANY assignment in this class and add interactivity using the `ggplotly()` function. 
+  
+```{r}
+covid_graph_1 <- covid19 %>%
+  filter(state %in% c("Minnesota","Wisconsin","Iowa","North Dakota","South Dakota")) %>%
+  group_by(state) %>%
+  mutate(total_cases = cumsum(cases)) %>%
+  ggplot(mapping = aes(x=date,y=total_cases,color=state)) +
+  geom_line() +
+  labs(title = "Covid19 Cases Over Time", x= "Date", y="Total Cases")
+
+ggplotly(covid_graph_1)
+```
+  
+```{r}
+bike_graph_1 <- Trips %>%
+  mutate (time_of_day = hour(sdate) + minute(sdate)/60,
+          week_day = wday(sdate), label = TRUE) %>%
+  ggplot(aes(x = time_of_day)) +
+  facet_wrap(vars(week_day)) +
+  geom_density(aes(fill = client, alpha = .5), color = NA) +
+  theme(axis.ticks.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.text.x = element_blank()) +
+  labs(title = "Trips by Casual and Registered Users over 1 Day",
+       x = "Time of Day",
+       y = "Proportion of Daily Trips",
+       fill = "Client Type",
+       alpha = NULL)
+
+ggplotly(bike_graph_1)
+```
+  
   
   2. Use animation to tell an interesting story with the `small_trains` dataset that contains data from the SNCF (National Society of French Railways). These are Tidy Tuesday data! Read more about it [here](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-02-26).
 
