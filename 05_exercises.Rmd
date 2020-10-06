@@ -58,6 +58,10 @@ panama_run <- read_csv("https://raw.githubusercontent.com/llendway/gps-data/mast
 #COVID-19 data from the New York Times
 covid19 <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-states.csv")
 
+data_site <- 
+  "https://www.macalester.edu/~dshuman1/data/112/2014-Q4-Trips-History-Data.rds" 
+Trips <- readRDS(gzcon(url(data_site)))
+
 ```
 
 ## Put your homework on GitHub!
@@ -119,7 +123,13 @@ ggplotly(bike_graph_1)
   2. Use animation to tell an interesting story with the `small_trains` dataset that contains data from the SNCF (National Society of French Railways). These are Tidy Tuesday data! Read more about it [here](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-02-26).
 
 ```{r}
-
+small_trains %>%
+  group_by(departure_station) %>%
+  filter(arrival_station %in% c("PARIS LYON")) %>%
+  ggplot(mapping = aes(x = journey_time_avg,
+                       y = delayed_number)) +
+  geom_dotplot() #missing y aesthetic somehow
+  
 ```
 
 ## Garden data
@@ -129,6 +139,11 @@ ggplotly(bike_graph_1)
   * Then, for each variety, find the cumulative harvest in pounds.  
   * Use the data you just made to create a static cumulative harvest area plot, with the areas filled with different colors for each vegetable and arranged (HINT: `fct_reorder()`) from most to least harvested (most on the bottom).  
   * Add animation to reveal the plot over date. 
+
+```{r}
+garden_harvest
+```
+
 
 ## Maps, animation, and movement!
 
