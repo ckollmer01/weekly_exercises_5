@@ -141,7 +141,19 @@ small_trains %>%
   * Add animation to reveal the plot over date. 
 
 ```{r}
-garden_harvest
+cum_tomato_harvest <- garden_harvest %>%
+  filter(vegetable %in% c("tomatoes")) %>%
+  group_by(variety, date) %>%
+  mutate(weight_lbs = weight*0.00220462) %>%
+  mutate(cum_weight_lbs = cumsum(weight_lbs),
+         variety = fct_reorder(variety,cum_weight_lbs),
+        day_of_week = wday(date, label = TRUE))
+
+cum_tomato_harvest %>%
+  ggplot(mapping = aes(day_of_week, cum_weight_lbs, fill = variety)) +
+  geom_area() +
+  transition_states(day_of_week)
+  
 ```
 
 
