@@ -125,7 +125,7 @@ ggplotly(bike_graph_1)
 
 I've used animation to look at the proportion of trains from different stations arriving late to Paris Lyon station and organizing them by mean journey time, to see whether longer journeys are more likely to arrive late. The graph is somewhat inconclusive and could require more knowledge about the local rail system to fully answer.
 
-```{r}
+```{r, eval = FALSE}
 small_trains %>%
   filter(arrival_station == "PARIS LYON") %>%
   group_by(departure_station) %>%
@@ -141,6 +141,8 @@ ggplot(aes(x = journey_time_avg,
        x = "Mean Journey Length from Departure Station (mins)",
        y = "Proportion of Late Arrivals")+
   transition_reveal(journey_time_avg)-> train_graph 
+
+
 ```
 
 
@@ -152,7 +154,7 @@ ggplot(aes(x = journey_time_avg,
   * Use the data you just made to create a static cumulative harvest area plot, with the areas filled with different colors for each vegetable and arranged (HINT: `fct_reorder()`) from most to least harvested (most on the bottom).  
   * Add animation to reveal the plot over date. 
 
-```{r}
+```{r,eval=FALSE}
 cum_tomato_harvest <- garden_harvest %>%
   filter(vegetable == "tomatoes") %>%
   complete(variety,date,fill = list(weight = 0)) %>%
@@ -186,19 +188,24 @@ cum_tomato_harvest %>%
   * Add something of your own! And comment on if you prefer this to the static map and why or why not.
   
   
-```{r}
+```{r,eval=FALSE}
 mallorca_map <- get_stamenmap(
                 bbox = c(right = 2.8, left = 2.3, top = 39.8, bottom = 39.5),
                 maptype = "terrain",
                 zoom = 12)
 
 ggmap(mallorca_map) +
-  geom_path(data = mallorca_bike_day7,
-             aes(x = lon, y = lat),
-             alpha = .5,
-             size = .5) +
-  theme_map() 
+  geom_point(data = mallorca_bike_day7,
+             aes(x = lon, y = lat, color = ele),
+             alpha = 1,
+             size = 3) +
+  labs(title = "Mallorca Bike Ride Elevation Over Time",
+       subtitle = "Time: {closest_state}")
+  theme_map() -> bike_map
   
+bike_map + 
+  transition_states(time) +
+  shadow_wake(wake_length = 3) #now there's an issue with the transition function
 ```
   
   
