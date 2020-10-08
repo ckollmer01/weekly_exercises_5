@@ -252,7 +252,7 @@ anim_save("ironman.gif")
   * Comment on what you observe.
   
   In this graph we can observe that although New York used to have by far the most new weekly cases, Florida and California now have more, with Florida far in the lead.
-```{r}
+```{r, eval=FALSE}
 covid19 %>% 
   group_by(state) %>% 
   mutate(weekly = lag(cases, n = 7, default = 0)) %>% 
@@ -277,7 +277,7 @@ anim_save("covid_path.gif")
   7. In this exercise you will animate a map of the US, showing how cumulative COVID-19 cases per 10,000 residents has changed over time. This is similar to exercises 11 & 12 from the previous exercises, with the added animation! So, in the end, you should have something like the static map you made there, but animated over all the days. Put date in the subtitle. Comment on what you see.
   
   In this map you can see that although Washington was the first state with a confirmed case, first New York and then Louisiana became the centers of the pandemic, with the center of the country rapidly increasing thereafter.
-```{r}
+```{r, eval=FALSE}
 census_pop_est_2018 <- read_csv("https://www.dropbox.com/s/6txwv3b4ng7pepe/us_census_2018_state_pop_est.csv?dl=1") %>% 
   separate(state, into = c("dot","state"), extra = "merge") %>% 
   select(-dot) %>% 
